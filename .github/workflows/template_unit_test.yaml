@@ -1,0 +1,32 @@
+name: Unity test
+
+on:
+  workflow_call:
+    inputs:
+      project-dir:
+        required: true
+        type: string
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        submodules: true
+    
+    - name: Dependency installation
+      run: sudo apt-get update && sudo apt-get install -y cmake build-essential
+
+    - name: Configure
+      run: cmake -S ${{ inputs.project-dir }} -B ${{ inputs.project-dir }}/build
+
+    - name: Build
+      run: cmake --build "${{ inputs.project-dir }}/build" --config Release -- -j
+
+    - name: Run tests
+      working-directory: ${{inputs.project-dir}}/build
+      run: ctest --output-on-failure

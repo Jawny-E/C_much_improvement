@@ -1,0 +1,16 @@
+name: CI pipeline
+
+on:
+  push:
+    branches: main
+  pull_request:
+    branches: main
+
+jobs:
+  unit-test:
+    strategy:
+      matrix:
+          project: ["dead_simple/"]
+    uses: ./.github/workflows/template_unit_test.yaml
+    with:
+      project-dir: ${{ matrix.project }}

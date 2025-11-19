@@ -1,5 +1,6 @@
 #Everything in build directories
 **/build/
+**/Testing/
 
 # Prerequisites
 *.d
